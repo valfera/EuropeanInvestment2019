@@ -50,15 +50,15 @@ shinyServer(function(input, output) {
       scale_fill_brewer(palette = "Dark2", name = "Fund Type")
   })
   
-  output$BoxPlotStocks = renderPlot({
+  output$LinePlotStocks = renderPlot({
     yearly_data =
-      Data[Data$Year == input$Year,]
+      Data[Data$Year == input$Year &
+             Data$Investment.policy == input$FundType,]
     
-    ggplot(yearly_data, aes(x = Country, y = Investment.stocks)) +
-      geom_boxplot(aes(color = Country)) +
-      coord_flip(ylim = c(-200, 800)) +
+    ggplot(yearly_data, aes(x = Date, y = Investment.stocks)) +
+      geom_line(aes(color = Country), size=1) +
       labs(title = "Investment Stocks",
-           x = "Country",
+           x = "Date",
            y = "Value (Billions)") +
       theme(axis.text = element_text(size = 13),
             axis.title = element_text(size = 15),
@@ -67,15 +67,15 @@ shinyServer(function(input, output) {
     
   })
   
-  output$BoxPlotFlows = renderPlot({
+  output$LinePlotFlows = renderPlot({
     yearly_data =
-      Data[Data$Year == input$Year,]
+      Data[Data$Year == input$Year &
+             Data$Investment.policy == input$FundType,]
     
-    ggplot(yearly_data, aes(x = Country, y = Investment.flows)) +
-      geom_boxplot(aes(color = Country)) +
-      coord_flip(ylim = c(-2, 7)) +
+    ggplot(yearly_data, aes(x = Date, y = Investment.flows)) +
+      geom_line(aes(color = Country), size=1) +
       labs(title = "Investment Flows",
-           x = "Country",
+           x = "Date",
            y = "Value (Billions)") +
       theme(axis.text = element_text(size = 13),
             axis.title = element_text(size = 15),
@@ -92,7 +92,7 @@ shinyServer(function(input, output) {
       geom_bar(stat = 'identity', 
                aes(fill = Investment.policy),
                position = 'dodge') +
-      labs(title = "Stock Value by Country",
+      labs(title = "Stock Value by Fund Type",
            x = "Country",
            y = "Value (Billions)") +
       coord_flip() +
@@ -100,17 +100,17 @@ shinyServer(function(input, output) {
             axis.title = element_text(size=15),
             legend.title = element_text(size=14),
             legend.text = element_text(size=13)) +
-      scale_fill_manual(values = "darkturquoise", name = "Fund Type")
+      scale_fill_manual(values = "darkcyan", name = "Fund Type")
     
   })
   
   output$BarFlows = renderPlot({
     
-    ggplot(Data, aes(x=reorder(Country, Investment.stocks), y=Investment.stocks)) + 
+    ggplot(TopCountries, aes(x=reorder(Country, Investment.stocks), y=Investment.stocks)) + 
       geom_bar(stat = 'identity', 
                aes(fill = Investment.policy),
                position = 'dodge') +
-      labs(title = "Stock Value by Country",
+      labs(title = "Stock Value of Top 5 European Countries",
            x = "Country",
            y = "Value (Billions)") +
       coord_flip() +

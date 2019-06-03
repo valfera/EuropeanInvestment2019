@@ -6,7 +6,7 @@ header <- dashboardHeader(title = "Investment Funds of European Countries", titl
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Fund Types", tabName = "Chart", icon = icon("chart-bar")),
-    menuItem("Wealth Distribution", tabName = "Boxplot", icon = icon("chart-bar")),
+    menuItem("Wealth Distribution", tabName = "Lineplot", icon = icon("chart-bar")),
     menuItem("Asset Values", tabName = "Barplot", icon = icon("chart-bar"))
     
   ),
@@ -43,10 +43,10 @@ body <- dashboardBody(
              box(plotOutput("BarPlotFlows"), width = 12))
   ),
   tabItem(
-    tabName = "Boxplot",
+    tabName = "Lineplot",
     h2("Wealth Distribution Across Europe"),
-    fluidRow(box(plotOutput("BoxPlotStocks"), width = 12),
-             box(plotOutput("BoxPlotFlows"), width = 12))
+    fluidRow(box(plotOutput("LinePlotStocks"), width = 12),
+             box(plotOutput("LinePlotFlows"), width = 12))
   ),
   tabItem(
     tabName = "Barplot",
