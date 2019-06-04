@@ -1,8 +1,14 @@
 
 #Server
 shinyServer(function(input, output) {
-
   
+  output$text = renderText({
+    "The purpose of this app is to allow the user to
+    interact with plots that display financial data
+    from 19 European countries over a span of
+    10 years. Enjoy!"
+  })
+
   output$BarPlotStocks = renderPlot({
     filtered_data =
       Data[Data$Country == input$Country &
@@ -11,7 +17,7 @@ shinyServer(function(input, output) {
     ggplot(filtered_data) +
       geom_bar(
         stat = 'identity',
-        aes(x = filtered_data$Date,
+        aes(x = factor(filtered_data$Date),
             y = filtered_data$Investment.stocks,
             fill = filtered_data$Investment.policy),
         position = 'dodge') +
@@ -22,6 +28,7 @@ shinyServer(function(input, output) {
             axis.title = element_text(size = 15),
             legend.title = element_text(size=14),
             legend.text = element_text(size=13)) +
+      xlab('Date') +
       scale_fill_brewer(palette = "Dark2", name = "Fund Type")
   })
   
@@ -34,7 +41,7 @@ shinyServer(function(input, output) {
       geom_bar(
         stat = 'identity',
         aes(
-          x = filtered_data$Date,
+          x = factor(filtered_data$Date),
           y = filtered_data$Investment.flows,
           fill = filtered_data$Investment.policy
         ),
@@ -50,37 +57,39 @@ shinyServer(function(input, output) {
       scale_fill_brewer(palette = "Dark2", name = "Fund Type")
   })
   
-  output$LinePlotStocks = renderPlot({
+  output$LinePlotStocks = renderPlotly({
     yearly_data =
       Data[Data$Year == input$Year &
              Data$Investment.policy == input$FundType,]
     
     ggplot(yearly_data, aes(x = Date, y = Investment.stocks)) +
-      geom_line(aes(color = Country), size=1) +
+      geom_line(aes(color = Country, linetype = Country), size=1) +
+      scale_linetype_manual(values =rep(c(1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1))) +
       labs(title = "Investment Stocks",
            x = "Date",
            y = "Value (Billions)") +
-      theme(axis.text = element_text(size = 13),
-            axis.title = element_text(size = 15),
+      theme(axis.text = element_text(size = 12),
+            axis.title = element_text(size = 12),
             legend.title = element_text(size=14),
-            legend.text = element_text(size=13))
+            legend.text = element_text(size=11))
     
   })
   
-  output$LinePlotFlows = renderPlot({
+  output$LinePlotFlows = renderPlotly({
     yearly_data =
       Data[Data$Year == input$Year &
              Data$Investment.policy == input$FundType,]
     
     ggplot(yearly_data, aes(x = Date, y = Investment.flows)) +
-      geom_line(aes(color = Country), size=1) +
+      geom_line(aes(color = Country, linetype = Country), size=1) +
+      scale_linetype_manual(values =rep(c(1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1))) +
       labs(title = "Investment Flows",
            x = "Date",
            y = "Value (Billions)") +
-      theme(axis.text = element_text(size = 13),
-            axis.title = element_text(size = 15),
+      theme(axis.text = element_text(size = 12),
+            axis.title = element_text(size = 12),
             legend.title = element_text(size=14),
-            legend.text = element_text(size=13))
+            legend.text = element_text(size=11))
   })
   
   output$BarStocks = renderPlot({
