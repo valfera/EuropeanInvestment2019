@@ -6,9 +6,9 @@ header <- dashboardHeader(title = "Investment Funds of European Countries", titl
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Introduction", tabName = "Intro", icon = icon("chart-bar")),
-    menuItem("Fund Types", tabName = "Chart", icon = icon("chart-bar")),
-    menuItem("Wealth Distribution", tabName = "Lineplot", icon = icon("chart-bar")),
-    menuItem("Asset Values", tabName = "Barplot", icon = icon("chart-bar"))
+    menuItem("Individual Countries", tabName = "Chart", icon = icon("chart-bar")),
+    menuItem("Fund Type Over Time", tabName = "Lineplot", icon = icon("chart-line")),
+    menuItem("Top 5 Countries", tabName = "Barplot", icon = icon("chart-bar"))
     
   ),
   
@@ -27,7 +27,7 @@ body <- dashboardBody(
     tabItem(
       tabName = "Intro",
       h2("Introduction"),
-      fluidRow(box(textOutput("text")))
+      fluidRow(box(textOutput("text"), style="font-size:200%", width = 12))
     ),
   tabItem(
     tabName = "Chart",
@@ -42,7 +42,7 @@ body <- dashboardBody(
   ),
   tabItem(
     tabName = "Lineplot",
-    h2("Wealth Distribution Across Europe"),
+    h2("Investment Distribution Across Europe"),
     selectInput(
       inputId = "FundType",
       label = "Choose a Fund Type",
@@ -53,9 +53,9 @@ body <- dashboardBody(
   ),
   tabItem(
     tabName = "Barplot",
-    h2("Asset Values by Country"),
+    h2("Assets Owned by Each Country"),
     selectInput(
-      inputId = "FundType",
+      inputId = "FundType2",
       label = "Choose a Fund Type",
       choices = sort(unique(Data$Investment.policy))
     ),
